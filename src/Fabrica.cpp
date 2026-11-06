@@ -1,6 +1,6 @@
 #include "Fabrica.h"
 
-Fabrica::Fabrica()
+Fabrica::Fabrica(User *ut)
 {
     //ctor
 }

@@ -3,7 +3,26 @@
 #include "uteis.h"
 #include "Dispositivo.h"
 
+enum ESTADO_MOTOR { STOP, START, RUN, AVARIADO };
+enum CLASSE_TEMP  { VERDE, AMARELO, VERMELHO };
+
 class Fabrica;
+
+struct Faixa {
+    int minimo;
+    int maximo;
+};
+
+struct LimitesTemp {
+    Faixa verde, amarelo, vermelho;
+
+    CLASSE_TEMP Classificar(int temp) const
+    {
+        if (temp >= vermelho.minimo) return VERMELHO;
+        if (temp >= amarelo.minimo)  return AMARELO;
+        return VERDE;
+    }
+};
 
 // Classe abstrata Motor que herda de Dispositivo
 class Motor : public Dispositivo
@@ -11,7 +30,7 @@ class Motor : public Dispositivo
     public:
         Motor(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
         virtual ~Motor();
-        
+
        // Métodos virtuais puros a implementar pelas classes derivadas
         virtual void Run() = 0;
         virtual void Start() = 0;
@@ -20,11 +39,11 @@ class Motor : public Dispositivo
         virtual bool Estou_Quente() = 0;
 
     protected:
-        float Consumo_Hora;       
+        float Consumo_Hora;
         int Temp_Aviso;           // Temperatura limite para aviso (passa a AMARELO)
         int Temp_Paragem;         // Temperatura limite para paragem (passa a VERMELHO)
         ESTADO_MOTOR Estado;      // Estado atual do motor (STOP, START, RUN, AVARIADO)
-        CLASSE_TEMP Class_temp;   // Classe de temperatura atual (VERDE, AMARELO, VERMELHO)
+        LimitesTemp Limites;      // Classe de temperatura atual (VERDE, AMARELO, VERMELHO)
         float Valor_Temp_Atual;   // Registo da temperatura atual exata do motor
 };
 

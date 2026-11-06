@@ -9,9 +9,9 @@ Motor::Motor(int id, string marca, Posicao p, float consumo, int t_aviso, int t_
     this->Temp_Aviso = t_aviso;
     this->Temp_Paragem = t_paragem;
     this->Prob_avaria = prob;
-    
+
     this->Estado = STOP;           // Estado inicial predefinido como STOP
-    this->Class_temp = VERDE;      // Classe de temperatura inicial predefinida como VERDE
+//  this->Class_temp = VERDE;      // Classe de temperatura inicial predefinida como VERDE
     this->Valor_Temp_Atual = 20.0; // Temperatura inicial simulada
 }
 
@@ -39,5 +39,5 @@ void MotorCombustao::Restart() {
 
 bool MotorCombustao::Estou_Quente() {
     // Retorna true se a temperatura atual atingir ou ultrapassar o limite de aviso (AMARELO)
-    return Valor_Temp_Atual >= Temp_Aviso; 
+    return Valor_Temp_Atual >= Temp_Aviso;
 }
