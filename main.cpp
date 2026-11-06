@@ -5,6 +5,7 @@ using namespace std;
 int main()
 {
     cout << "melhor grupo de todos" << endl;
+    cout << "teste"
 
     return 0;
 }
