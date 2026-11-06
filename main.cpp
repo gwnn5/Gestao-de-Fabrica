@@ -4,8 +4,7 @@ using namespace std;
 
 int main()
 {
-    cout << "melhor grupo de todos" << endl;
-    cout << "teste"
+    cout << "melhor grupo de todos!!" << endl;
 
     return 0;
 }
