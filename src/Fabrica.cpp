@@ -10,7 +10,7 @@ Fabrica::~Fabrica()
     //dtor
 }
 
-void Avisar_gestor(int _id)
+void Fabrica::Avisar_gestor(int _id)
 {
 
 }
