@@ -5,7 +5,6 @@
 		<Option title="ficha0" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="include/" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/ficha0" prefix_auto="1" extension_auto="1" />
@@ -35,14 +34,16 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Dispositivo.h" />
 		<Unit filename="include/Fabrica.h" />
 		<Unit filename="include/Motor.h" />
+		<Unit filename="include/Sensor.h" />
+		<Unit filename="include/uteis.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Dispositivo.cpp" />
 		<Unit filename="src/Fabrica.cpp" />
 		<Unit filename="src/Motor.cpp" />
-		<Unit filename="uteis.h">
-			<Option virtualFolder="include/" />
-		</Unit>
+		<Unit filename="src/Sensor.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

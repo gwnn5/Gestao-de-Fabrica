@@ -9,3 +9,7 @@ Motor::~Motor()
 {
     //dtor
 }
+
+
+void Motor::Run(){
+}

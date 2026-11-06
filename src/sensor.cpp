@@ -1,11 +1,14 @@
-#include "sensor.h"
+#include "Sensor.h"
 
-sensor::sensor()
+Sensor::Sensor()
 {
     //ctor
 }
 
-sensor::~sensor()
+Sensor::~Sensor()
 {
     //dtor
+}
+
+void Sensor::Run(){
 }

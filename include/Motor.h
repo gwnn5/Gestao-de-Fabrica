@@ -1,24 +1,27 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 #include "uteis.h"
+#include "Dispositivo.h"
 
-class Motor
+class Fabrica;
+
+class Motor : public Dispositivo
 {
     public:
         Motor();
         virtual ~Motor();
+        //metodos
+        virtual void Run();
 
     protected:
 
     private:
-        int Id;
-        string Marca;
         float Consumo_Hora;
         int Temp_Aviso;
         int Temp_Paragem;
-        int Prob_Avaria;
-        string Estado;
-        int Class_temp; //1 para verde,2 para amarelho e 3 para vermelho? (?)
+        ESTADO_MOTOR Estado;
+        CLASSE_TEMP Class_temp;
+
 
 };
 

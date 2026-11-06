@@ -1,16 +1,25 @@
 #ifndef SENSOR_H
 #define SENSOR_H
+#include "uteis.h"
+#include "Dispositivo.h"
 
+class Fabrica;
 
-class sensor
+class Sensor : public Dispositivo
 {
     public:
-        sensor();
-        virtual ~sensor();
+        Sensor();
+        virtual ~Sensor();
+        //metodos
+        virtual void Run();
 
     protected:
 
     private:
+        float Valor;
+
+
+
 };
 
 #endif // SENSOR_H
