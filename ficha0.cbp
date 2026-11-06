@@ -14,6 +14,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -23,6 +24,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -33,7 +35,16 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Dispositivo.h" />
+		<Unit filename="include/Fabrica.h" />
+		<Unit filename="include/Motor.h" />
+		<Unit filename="include/Sensor.h" />
+		<Unit filename="include/uteis.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Dispositivo.cpp" />
+		<Unit filename="src/Fabrica.cpp" />
+		<Unit filename="src/Motor.cpp" />
+		<Unit filename="src/Sensor.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
