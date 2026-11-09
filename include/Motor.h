@@ -16,7 +16,7 @@ struct Faixa {
 struct LimitesTemp {
     Faixa verde, amarelo, vermelho;
 
-    CLASSE_TEMP Classificar(int temp) const
+    CLASSE_TEMP Classificar(float temp) const
     {
         if (temp >= vermelho.minimo) return VERMELHO;
         if (temp >= amarelo.minimo)  return AMARELO;
@@ -32,6 +32,7 @@ class Motor : public Dispositivo
         virtual ~Motor();
 
        // Métodos virtuais puros a implementar pelas classes derivadas
+        int Get_Id() { return Id;}
         virtual void Run() = 0;
         virtual void Start() = 0;
         virtual void Restart() = 0;

@@ -9,6 +9,7 @@ class Dispositivo
     public:
         Dispositivo();
         virtual ~Dispositivo();
+        void Atribuir_Fabrica(Fabrica *_F) { Fab = _F; }
 
     protected:
         int Id;

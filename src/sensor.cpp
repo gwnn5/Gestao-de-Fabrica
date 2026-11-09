@@ -1,7 +1,12 @@
 #include "Sensor.h"
 
-Sensor::Sensor()
+Sensor::Sensor(int _id, string _marca, Posicao _pos, int _prob_avaria, float _valor)
 {
+    Id = _id;
+    Marca = _marca;
+    pos = _pos;
+    Prob_avaria = _prob_avaria;
+    Valor = _valor;
     //ctor
 }
 
@@ -11,4 +16,5 @@ Sensor::~Sensor()
 }
 
 void Sensor::Run(){
+
 }

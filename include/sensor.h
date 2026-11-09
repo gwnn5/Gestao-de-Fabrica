@@ -8,7 +8,7 @@ class Fabrica;
 class Sensor : public Dispositivo
 {
     public:
-        Sensor();
+        Sensor(int _id, string _marca, Posicao _pos, int _prob_avaria, float _valor);
         virtual ~Sensor();
         //metodos
         virtual void Run();
