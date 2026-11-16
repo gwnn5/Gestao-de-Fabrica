@@ -23,6 +23,13 @@ class Fabrica
         list<Motor *> *Listar_Tipo(string Tipo, ostream &f = std::cout);
         bool Manutencao();                 // Efetua a manutenção aos dispositivos
 
+        // --- MÉTODOS EM FALTA ADICIONADOS AQUI ---
+        list<string> *Ranking_Dos_Fracos(); // Devolve lista de marcas que mais avariam[cite: 9]
+        list<Motor *> *Ranking_Dos_Mais_Trabalhadores(); // Devolve lista de motores que mais trabalharam[cite: 9]
+        void Relatorio(string fich_xml); // Envia relatório XML do estado da fábrica e consumo[cite: 9]
+        void Listagem_HTML(string fich_html); // Grava ficheiro HTML com o estado atual[cite: 9]
+        // -----------------------------------------
+
         // Métodos de alerta gerados pelos sensores e respetivas reações
         int Aviso_Humidade(list<Motor *> &lm);
         int Aviso_Fumo(list<Motor *> &lm, string fich_video);
