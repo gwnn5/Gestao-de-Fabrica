@@ -3,7 +3,9 @@
 #include "uteis.h"
 #include "Dispositivo.h"
 
+// Estados possíveis de um motor
 enum ESTADO_MOTOR { STOP, START, RUN, AVARIADO };
+// Classes de temperatura do motor
 enum CLASSE_TEMP  { VERDE, AMARELO, VERMELHO };
 
 class Fabrica;
@@ -38,6 +40,10 @@ class Motor : public Dispositivo
         virtual void Stop() = 0;
         virtual bool Estou_Quente() = 0;
 
+        // Métodos auxiliares para exportação XML
+        string GetEstadoString() const;
+        string GetCorString() const;
+
     protected:
         float Consumo_Hora;
         int Temp_Aviso;           // Temperatura limite para aviso (passa a AMARELO)
@@ -58,7 +64,25 @@ class MotorCombustao : public Motor {
         bool Estou_Quente() override;
 };
 
-class MotorEletrico : public Motor { /* A implementar de forma semelhante */ };
-class MotorInducao : public Motor { /* A implementar de forma semelhante */ };
+class MotorEletrico : public Motor {
+    public:
+        MotorEletrico(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
+        void Run() override;
+        void Start() override;
+        void Restart() override;
+        void Stop() override;
+        bool Estou_Quente() override;
+};
+
+class MotorInducao : public Motor {
+    public:
+        MotorInducao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
+        void Run() override;
+        void Start() override;
+        void Restart() override;
+        void Stop() override;
+        bool Estou_Quente() override;
+};
 
 #endif // MOTOR_H
+

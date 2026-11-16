@@ -9,6 +9,9 @@ class Dispositivo
     public:
         Dispositivo();
         virtual ~Dispositivo();
+        int GetId() const { return Id; }
+        string GetMarca() const { return Marca; }
+        Posicao GetPosicao() const { return pos; }
 
     protected:
         int Id;
@@ -21,3 +24,4 @@ class Dispositivo
 };
 
 #endif // DISPOSITIVO_H
+

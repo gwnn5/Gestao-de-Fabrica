@@ -13,6 +13,9 @@ class User {
         
         // Interfaces virtuais para verificar as permissões do utilizador
         virtual bool PodeAdicionar() const = 0;
+        virtual bool PodeRemover() const = 0;
+        virtual bool PodeListar() const = 0;
+        virtual bool PodeRun() const = 0;
         virtual bool PodeManutencao() const = 0;
 };
 
@@ -21,6 +24,9 @@ class Admin : public User {
     public:
         Admin(int id, string nome) : User(id, nome) {}
         bool PodeAdicionar() const override { return true; }
+        bool PodeRemover() const override { return true; }
+        bool PodeListar() const override { return true; }
+        bool PodeRun() const override { return true; }
         bool PodeManutencao() const override { return true; }
 };
 
@@ -29,6 +35,9 @@ class Normal : public User {
     public:
         Normal(int id, string nome) : User(id, nome) {}
         bool PodeAdicionar() const override { return true; }
+        bool PodeRemover() const override { return false; } // Não pode remover
+        bool PodeListar() const override { return true; }
+        bool PodeRun() const override { return true; }
         bool PodeManutencao() const override { return true; }
 };
 
@@ -37,6 +46,9 @@ class Visitante : public User {
     public:
         Visitante(int id, string nome) : User(id, nome) {}
         bool PodeAdicionar() const override { return false; }
+        bool PodeRemover() const override { return false; }
+        bool PodeListar() const override { return true; } // Apenas listar
+        bool PodeRun() const override { return false; }
         bool PodeManutencao() const override { return false; }
 };
 #endif // USER_H
