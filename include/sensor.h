@@ -12,6 +12,7 @@ class Sensor : public Dispositivo
         virtual ~Sensor();
         //metodos
         virtual void Run();
+        void Mostrar(ostream &f) const override;
 
     protected:
 

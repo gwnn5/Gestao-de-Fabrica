@@ -8,7 +8,16 @@ Fabrica::Fabrica(User *ut)
 
 Fabrica::~Fabrica()
 {
-    //dtor
+
+    list<Motor *>::iterator itM;
+    for (itM = listaMotores.begin(); itM != listaMotores.end(); itM++)
+        delete *itM;
+    listaMotores.clear();
+
+    list<Sensor *>::iterator itS;
+    for (itS = listaSensores.begin(); itS != listaSensores.end(); itS++)
+        delete *itS;
+    listaSensores.clear();
 }
 
 Motor *Fabrica::Procurar_Motor(int id)
@@ -37,8 +46,44 @@ bool Fabrica::Add(Motor *m)
     return false;
 }
 
-void Fabrica::Desligar(int id_motor)
+bool Fabrica::Add(Sensor *s)
 {
-    Procurar_Motor(id_motor)->Stop();
+    if (utilizadorAtual != NULL && utilizadorAtual->PodeAdicionar()){
+        listaSensores.push_back(s);
+        s->Atribuir_Fabrica(this);
+        return true;
+    }
+    return false;
 }
 
+void Fabrica::Desligar(int id_motor)
+{
+    Motor *m = Procurar_Motor(id_motor);
+    if (m != NULL)
+        m->Stop();
+}
+
+ESTADO_MOTOR Fabrica::Get_Estado(int id_motor)
+{
+    Motor *m = Procurar_Motor(id_motor);
+    if (m != NULL)
+        return m->Get_Estado();
+    return STOP;   // motor nao existe
+}
+
+void Fabrica::Listar(ostream &f)
+{
+    f << "=== Fabrica: " << Nome << " ===" << endl;
+    f << "Horario: " << Hora_abertura.horas << "h - "
+      << Hora_encerramento.horas << "h" << endl;
+
+    f << "--- Motores (" << listaMotores.size() << ") ---" << endl;
+    list<Motor *>::iterator itM;
+    for (itM = listaMotores.begin(); itM != listaMotores.end(); itM++)
+        (*itM)->Mostrar(f);
+
+    f << "--- Sensores (" << listaSensores.size() << ") ---" << endl;
+    list<Sensor *>::iterator itS;
+    for (itS = listaSensores.begin(); itS != listaSensores.end(); itS++)
+        (*itS)->Mostrar(f);
+}

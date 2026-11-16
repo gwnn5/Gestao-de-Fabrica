@@ -17,27 +17,34 @@ Motor::Motor(int id, string marca, Posicao p, float consumo, int t_aviso, int t_
 
 Motor::~Motor() {}
 
-// Implementação do construtor e métodos da classe derivada MotorCombustao
-MotorCombustao::MotorCombustao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob)
-    : Motor(id, marca, p, consumo, t_aviso, t_paragem, prob) {}
-
-void MotorCombustao::Start() {
-    Estado = START;
+string Motor::Estado_Para_Texto() const
+{
+    switch (Estado)
+    {
+        case STOP:     return "STOP";
+        case START:    return "START";
+        case RUN:      return "RUN";
+        case AVARIADO: return "AVARIADO";
+    }
+    return "?";
 }
 
-void MotorCombustao::Run() {
-    Estado = RUN;
+string Motor::Classe_Para_Texto() const
+{
+    switch (Limites.Classificar(Valor_Temp_Atual))
+    {
+        case VERDE:    return "VERDE";
+        case AMARELO:  return "AMARELO";
+        case VERMELHO: return "VERMELHO";
+    }
+    return "?";
 }
 
-void MotorCombustao::Stop() {
-    Estado = STOP;
+void Motor::Mostrar(ostream &f) const
+{
+    Dispositivo::Mostrar(f);   // imprime ID, marca e posicao
+    f << " | Estado: " << Estado_Para_Texto()
+      << " | Temp: " << Valor_Temp_Atual << " (" << Classe_Para_Texto() << ")"
+      << " | Consumo/h: " << Consumo_Hora << endl;
 }
 
-void MotorCombustao::Restart() {
-    Estado = START;
-}
-
-bool MotorCombustao::Estou_Quente() {
-    // Retorna true se a temperatura atual atingir ou ultrapassar o limite de aviso (AMARELO)
-    return Valor_Temp_Atual >= Temp_Aviso;
-}

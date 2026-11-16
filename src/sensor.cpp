@@ -18,3 +18,9 @@ Sensor::~Sensor()
 void Sensor::Run(){
 
 }
+
+void Sensor::Mostrar(ostream &f) const
+{
+    Dispositivo::Mostrar(f);
+    f << " | Valor: " << Valor << endl;
+}

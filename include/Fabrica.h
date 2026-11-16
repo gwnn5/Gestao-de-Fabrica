@@ -18,6 +18,7 @@ class Fabrica
         bool Load(const string &ficheiro); // Carrega a configuração inicial via XML
         bool Add(User *ut);
         bool Add(Motor *m);
+        bool Add(Sensor *s);
         void Listar(ostream &f = std::cout); // Lista o estado atual da fábrica
         void Desligar(int id_motor);         // Desliga um motor específico dado o seu ID
         ESTADO_MOTOR Get_Estado(int id_motor); // Obtém o estado de um motor específico

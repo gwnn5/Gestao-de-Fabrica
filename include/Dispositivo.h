@@ -10,6 +10,7 @@ class Dispositivo
         Dispositivo();
         virtual ~Dispositivo();
         void Atribuir_Fabrica(Fabrica *_F) { Fab = _F; }
+        virtual void Mostrar(ostream &f) const;
 
     protected:
         int Id;

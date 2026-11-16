@@ -37,6 +37,9 @@
 		<Unit filename="include/Dispositivo.h" />
 		<Unit filename="include/Fabrica.h" />
 		<Unit filename="include/Motor.h" />
+		<Unit filename="include/MotorCombustao.h" />
+		<Unit filename="include/MotorEletrico.h" />
+		<Unit filename="include/MotorInducao.h" />
 		<Unit filename="include/Sensor.h" />
 		<Unit filename="include/user.h" />
 		<Unit filename="include/uteis.h" />
@@ -44,6 +47,9 @@
 		<Unit filename="src/Dispositivo.cpp" />
 		<Unit filename="src/Fabrica.cpp" />
 		<Unit filename="src/Motor.cpp" />
+		<Unit filename="src/MotorCombustao.cpp" />
+		<Unit filename="src/MotorEletrico.cpp" />
+		<Unit filename="src/MotorInducao.cpp" />
 		<Unit filename="src/Sensor.cpp" />
 		<Extensions />
 	</Project>
