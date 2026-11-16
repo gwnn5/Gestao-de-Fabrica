@@ -15,6 +15,7 @@ class Sensor : public Dispositivo {
         // Métodos de simulação
         virtual void Run();
         void Mostrar(ostream &f) const override;
+        virtual string GetValorAtualString() const;
 
     protected:
         float Valor;
@@ -37,7 +38,7 @@ class SensorHumidade : public Sensor {
             : Sensor(id, marca, p, prob, valor_aviso) {}
 
         // Sobrescrito para adicionar o símbolo '%' exigido pelo simulador na tag <VALOR_ATUAL>
-        string GetValorAtualString() const ;
+        string GetValorAtualString() const override;
 };
 
 class SensorFumo : public Sensor {

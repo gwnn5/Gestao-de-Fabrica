@@ -48,19 +48,24 @@ void Sensor::Mostrar(ostream &f) const
     f << " | Valor: " << Valor << endl;
 }
 
+string Sensor::GetValorAtualString() const
+{
+    if (Valor == -1) return "AVARIA";
+    return to_string((int)Valor);
+}
 
 // ==========================================
 // COMPORTAMENTOS ESPECÍFICOS (CLASSES DERIVADAS)
 // ==========================================
 
-// O simulador exige que a humidade tenha o símbolo '%'[cite: 11]
+// O simulador exige que a humidade tenha o símbolo '%'
 string SensorHumidade::GetValorAtualString() const {
     if (this->Valor == -1) return "AVARIA";
     return to_string((int)this->Valor) + "%";
 }
 
 
-// Sensor de Mísseis: Deteta se um míssil vem na direção da fábrica[cite: 8]
+// Sensor de Mísseis: Deteta se um míssil vem na direção da fábricaS
 // O valor lido deve ser apenas 0 (seguro) ou 1 (alerta)
 void SensorMissel::Run() {
     // Verifica avaria
