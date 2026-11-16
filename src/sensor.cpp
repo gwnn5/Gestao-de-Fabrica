@@ -18,6 +18,7 @@ Sensor::Sensor(int id, string marca, Posicao p, int prob, float valor_aviso) {
     this->Valor = 0; // O valor inicial lido pelo sensor é 0
 }
 
+
 Sensor::~Sensor() {}
 
 
