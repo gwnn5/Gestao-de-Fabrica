@@ -9,14 +9,12 @@ class Fabrica;
 
 class Sensor : public Dispositivo {
     public:
-        Sensor(int id, string marca, Posicao p, int prob, float valor_aviso);
+        Sensor(int _id, string _marca, Posicao _pos, int _prob_avaria, float _valor);
         virtual ~Sensor();
         
         // Métodos de simulação
         virtual void Run();
-        
-        // Método virtual para formatação do valor para exportação XML
-        virtual string GetValorAtualString() const;
+        void Mostrar(ostream &f) const override;
 
     protected:
         float Valor;

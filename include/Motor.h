@@ -18,7 +18,7 @@ struct Faixa {
 struct LimitesTemp {
     Faixa verde, amarelo, vermelho;
 
-    CLASSE_TEMP Classificar(int temp) const
+    CLASSE_TEMP Classificar(float temp) const
     {
         if (temp >= vermelho.minimo) return VERMELHO;
         if (temp >= amarelo.minimo)  return AMARELO;
@@ -32,8 +32,12 @@ class Motor : public Dispositivo
     public:
         Motor(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
         virtual ~Motor();
+        void Mostrar(ostream &f) const override;
 
        // Métodos virtuais puros a implementar pelas classes derivadas
+        int Get_Id() const { return Id;}
+        virtual string Get_Tipo() const = 0;
+        ESTADO_MOTOR Get_Estado() const { return Estado; }
         virtual void Run() = 0;
         virtual void Start() = 0;
         virtual void Restart() = 0;
@@ -51,38 +55,10 @@ class Motor : public Dispositivo
         ESTADO_MOTOR Estado;      // Estado atual do motor (STOP, START, RUN, AVARIADO)
         LimitesTemp Limites;      // Classe de temperatura atual (VERDE, AMARELO, VERMELHO)
         float Valor_Temp_Atual;   // Registo da temperatura atual exata do motor
+        string Estado_Para_Texto() const;
+        string Classe_Para_Texto() const;
 };
 
-// Classes derivadas para tipos específicos de motores de acordo com o ficheiro XML
-class MotorCombustao : public Motor {
-    public:
-        MotorCombustao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
-        void Run() override;
-        void Start() override;
-        void Restart() override;
-        void Stop() override;
-        bool Estou_Quente() override;
-};
-
-class MotorEletrico : public Motor {
-    public:
-        MotorEletrico(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
-        void Run() override;
-        void Start() override;
-        void Restart() override;
-        void Stop() override;
-        bool Estou_Quente() override;
-};
-
-class MotorInducao : public Motor {
-    public:
-        MotorInducao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
-        void Run() override;
-        void Start() override;
-        void Restart() override;
-        void Stop() override;
-        bool Estou_Quente() override;
-};
 
 #endif // MOTOR_H
 

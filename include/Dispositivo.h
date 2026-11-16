@@ -9,9 +9,8 @@ class Dispositivo
     public:
         Dispositivo();
         virtual ~Dispositivo();
-        int GetId() const { return Id; }
-        string GetMarca() const { return Marca; }
-        Posicao GetPosicao() const { return pos; }
+        void Atribuir_Fabrica(Fabrica *_F) { Fab = _F; }
+        virtual void Mostrar(ostream &f) const;
 
     protected:
         int Id;

@@ -3,19 +3,14 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
-// ==========================================
-// CONSTRUTOR E DESTRUTOR (CLASSE BASE)
-// ==========================================
-
-Sensor::Sensor(int id, string marca, Posicao p, int prob, float valor_aviso) {
-    this->Id = id;
-    this->Marca = marca;
-    this->pos = p;
-    this->Prob_avaria = prob;
-    this->Valor_Aviso = valor_aviso;
-    this->Valor = 0; // O valor inicial lido pelo sensor é 0
+Sensor::Sensor(int _id, string _marca, Posicao _pos, int _prob_avaria, float _valor)
+{
+    Id = _id;
+    Marca = _marca;
+    pos = _pos;
+    Prob_avaria = _prob_avaria;
+    Valor = _valor;
+    //ctor
 }
 
 
@@ -47,10 +42,14 @@ void Sensor::Run() {
     }
 }
 
-// Retorna o valor lido em formato texto para exportação XML
-string Sensor::GetValorAtualString() const {
-    if (this->Valor == -1) return "AVARIA";
-    return to_string((int)this->Valor); 
+void Sensor::Run(){
+
+}
+
+void Sensor::Mostrar(ostream &f) const
+{
+    Dispositivo::Mostrar(f);
+    f << " | Valor: " << Valor << endl;
 }
 
 
