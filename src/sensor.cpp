@@ -33,17 +33,13 @@ void Sensor::Run() {
 
     // 2. Simula o funcionamento normal: pequena flutuação aleatória no valor lido
     // Gera uma variação entre -5 e +5
-    float variacao = (rand() % 11) - 5; 
+    float variacao = (rand() % 11) - 5;
     this->Valor += variacao;
 
     // Garante que o valor lido não seja negativo (exceto o código de falha -1)
     if (this->Valor < 0 && this->Valor != -1) {
-        this->Valor = 0; 
+        this->Valor = 0;
     }
-}
-
-void Sensor::Run(){
-
 }
 
 void Sensor::Mostrar(ostream &f) const
@@ -73,7 +69,7 @@ void SensorMissel::Run() {
         this->Valor = -1; // Avariado
         return;
     }
-    
+
     // Probabilidade muito baixa de detetar um míssil real (ex: 1 em 1000 ciclos)
     int chance_missel = rand() % 1000;
     if (chance_missel == 0) {
@@ -93,7 +89,7 @@ void SensorFumo::Run() {
         this->Valor = -1; // Avariado
         return;
     }
-    
+
     // Probabilidade baixa de detetar fumo (ex: 1 em 500 ciclos)
     int chance_fumo = rand() % 500;
     if (chance_fumo == 0) {

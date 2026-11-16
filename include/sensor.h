@@ -11,7 +11,7 @@ class Sensor : public Dispositivo {
     public:
         Sensor(int _id, string _marca, Posicao _pos, int _prob_avaria, float _valor);
         virtual ~Sensor();
-        
+
         // Métodos de simulação
         virtual void Run();
         void Mostrar(ostream &f) const override;
@@ -26,41 +26,41 @@ class Sensor : public Dispositivo {
 // ==========================================
 
 class SensorLuz : public Sensor {
-    public: 
-        SensorLuz(int id, string marca, Posicao p, int prob, float valor_aviso) 
+    public:
+        SensorLuz(int id, string marca, Posicao p, int prob, float valor_aviso)
             : Sensor(id, marca, p, prob, valor_aviso) {}
 };
 
 class SensorHumidade : public Sensor {
-    public: 
-        SensorHumidade(int id, string marca, Posicao p, int prob, float valor_aviso) 
+    public:
+        SensorHumidade(int id, string marca, Posicao p, int prob, float valor_aviso)
             : Sensor(id, marca, p, prob, valor_aviso) {}
-        
+
         // Sobrescrito para adicionar o símbolo '%' exigido pelo simulador na tag <VALOR_ATUAL>
-        string GetValorAtualString() const override;
+        string GetValorAtualString() const ;
 };
 
 class SensorFumo : public Sensor {
-    public: 
-        SensorFumo(int id, string marca, Posicao p, int prob, float valor_aviso) 
+    public:
+        SensorFumo(int id, string marca, Posicao p, int prob, float valor_aviso)
             : Sensor(id, marca, p, prob, valor_aviso) {}
-        
+
         // Sobrescrito pois tem comportamento de deteção específico (binário: 0 ou 1)
         void Run() override;
 };
 
 class SensorMissel : public Sensor {
-    public: 
-        SensorMissel(int id, string marca, Posicao p, int prob, float valor_aviso) 
+    public:
+        SensorMissel(int id, string marca, Posicao p, int prob, float valor_aviso)
             : Sensor(id, marca, p, prob, valor_aviso) {}
-        
+
         // Sobrescrito pois tem comportamento de deteção específico (binário: 0 ou 1)
         void Run() override;
 };
 
 class SensorTemperatura : public Sensor {
-    public: 
-        SensorTemperatura(int id, string marca, Posicao p, int prob, float valor_aviso) 
+    public:
+        SensorTemperatura(int id, string marca, Posicao p, int prob, float valor_aviso)
             : Sensor(id, marca, p, prob, valor_aviso) {}
 };
 
