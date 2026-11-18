@@ -1,4 +1,7 @@
 #include "Sensor.h"
+#include "SensorHumidade.h" 
+#include "SensorMissil.h" 
+#include "SensorFumo.h"
 #include <cstdlib>
 #include <string>
 #include <iostream>
@@ -66,17 +69,63 @@ void Sensor::Mostrar(ostream &f) const
       << " | Valor Atual: " << valor_atual 
       << " | Aviso: " << valor_aviso << endl;
 }
-
 // ==========================================
 // FORMATAÇÃO DO VALOR ATUAL (XML)
 // ==========================================
 
+// 1. Implementação Padrão da Classe Base (O teu código)
 string Sensor::GetValorAtualString() const {
     // Se o sensor estiver avariado
     if (this->valor_atual == -1) {
         return "AVARIA";
     }
     // Para a maioria dos sensores (Fogo, Luz, etc.), retorna apenas o número.
-    // O SensorHumidade sobrescreve este método para adicionar o '%'
     return to_string((int)this->valor_atual);
+}
+
+// 2. Implementação Específica da Humidade (O código do teu colega, corrigido)
+// O simulador exige que a humidade tenha o símbolo '%'
+string SensorHumidade::GetValorAtualString() const {
+    if (this->valor_atual == -1) return "AVARIA";
+    return to_string((int)this->valor_atual) + "%";
+}
+
+
+// Sensor de Mísseis: Deteta se um míssil vem na direção da fábrica[cite: 10]
+// O valor lido deve ser apenas 0 (seguro) ou 1 (alerta)
+void SensorMissel::Run() {
+    // Verifica avaria
+    int chance_avaria = rand() % 100;
+    if (chance_avaria < this->Prob_avaria) {
+        this->valor_atual = -1; // Avariado
+        return;
+    }
+
+    // Probabilidade muito baixa de detetar um míssil real (ex: 1 em 1000 ciclos)
+    int chance_missel = rand() % 1000;
+    if (chance_missel == 0) {
+        this->valor_atual = 1; // Míssil detetado! (Dispara o evento na fábrica)
+    } else {
+        this->valor_atual = 0; // Zona segura
+    }
+}
+
+
+// Sensor de Fumo: Deteta incêndios e zonas de fumo
+// Tal como o míssil, o valor é essencialmente binário (0 ou 1)
+void SensorFumo::Run() {
+    // Verifica avaria
+    int chance_avaria = rand() % 100;
+    if (chance_avaria < this->Prob_avaria) {
+        this->valor_atual = -1; // Avariado
+        return;
+    }
+
+    // Probabilidade baixa de detetar fumo (ex: 1 em 500 ciclos)
+    int chance_fumo = rand() % 500;
+    if (chance_fumo == 0) {
+        this->valor_atual = 1; // Fumo detetado!
+    } else {
+        this->valor_atual = 0; // Zona segura
+    }
 }
