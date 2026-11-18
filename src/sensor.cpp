@@ -93,7 +93,7 @@ string SensorHumidade::GetValorAtualString() const {
 
 // Sensor de Mísseis: Deteta se um míssil vem na direção da fábrica[cite: 10]
 // O valor lido deve ser apenas 0 (seguro) ou 1 (alerta)
-void SensorMissel::Run() {
+void SensorMissil::Run() {
     // Verifica avaria
     int chance_avaria = rand() % 100;
     if (chance_avaria < this->Prob_avaria) {
