@@ -35,7 +35,6 @@ class Motor : public Dispositivo
         void Mostrar(ostream &f) const override;
 
        // Métodos virtuais puros a implementar pelas classes derivadas
-        int Get_Id() const { return Id;}
         virtual string Get_Tipo() const = 0;
         ESTADO_MOTOR Get_Estado() const { return Estado; }
         virtual void Run() = 0;
@@ -44,9 +43,26 @@ class Motor : public Dispositivo
         virtual void Stop() = 0;
         virtual bool Estou_Quente() = 0;
 
+        // ==========================================
+        // NOVOS GETTERS ADICIONADOS AQUI
+        // ==========================================
+        float Get_Temperatura() const { return Valor_Temp_Atual; }
+        float Get_Consumo() const { return Consumo_Hora; }
+        CLASSE_TEMP Get_Classe_Temp() const { return Limites.Classificar(Valor_Temp_Atual); }
+        // ==========================================
+
+        Faixa Get_Faixa_Verde() const { return Limites.verde; }
+
         // Métodos auxiliares para exportação XML
         string GetEstadoString() const;
         string GetCorString() const;
+
+        // ==========================================
+        // SETTERS (Para o Load do XML e Manutenção)
+        // ==========================================
+        void Set_Temperatura(float temp);
+        void Set_Estado(ESTADO_MOTOR novo_estado);
+        void Set_Limites(LimitesTemp novos_limites);
 
     protected:
         float Consumo_Hora;
@@ -59,6 +75,4 @@ class Motor : public Dispositivo
         string Classe_Para_Texto() const;
 };
 
-
 #endif // MOTOR_H
-

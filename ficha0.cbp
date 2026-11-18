@@ -41,6 +41,12 @@
 		<Unit filename="include/MotorEletrico.h" />
 		<Unit filename="include/MotorInducao.h" />
 		<Unit filename="include/Sensor.h" />
+		<Unit filename="include/SensorHumidade.h" />
+        <Unit filename="include/SensorLuz.h" />
+        <Unit filename="include/SensorFumo.h" />
+        <Unit filename="include/SensorMissil.h" />
+        <Unit filename="include/SensorTemperatura.h" />
+        <Unit filename="include/SensorFogo.h" />
 		<Unit filename="include/user.h" />
 		<Unit filename="include/uteis.h" />
 		<Unit filename="main.cpp" />
@@ -51,6 +57,15 @@
 		<Unit filename="src/MotorEletrico.cpp" />
 		<Unit filename="src/MotorInducao.cpp" />
 		<Unit filename="src/Sensor.cpp" />
+        <Unit filename="src/SensorHumidade.cpp" />
+		<Unit filename="src/SensorLuz.cpp" />
+        <Unit filename="src/SensorFumo.cpp" />
+        <Unit filename="src/SensorMissil.cpp" />
+        <Unit filename="src/SensorTemperatura.cpp" />
+        <Unit filename="src/SensorFogo.cpp" />
+
+	
+    
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

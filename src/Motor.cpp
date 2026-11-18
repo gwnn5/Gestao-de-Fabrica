@@ -6,18 +6,20 @@
 // IMPLEMENTAÇÃO DA CLASSE BASE: Motor
 // ==========================================
 
-Motor::Motor(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob) {
-    this->Id = id;
-    this->Marca = marca;
-    this->pos = p;
-    this->Consumo_Hora = consumo;
-    this->Temp_Aviso = t_aviso;
-    this->Temp_Paragem = t_paragem;
-    this->Prob_avaria = prob;
-    
-    this->Estado = STOP; // Estado inicial por defeito[cite: 8]
-    this->Valor_Temp_Atual = 20.0f; // Temperatura ambiente inicial (simulação)
+
+Motor::Motor(int id, string marca, Posicao p,
+             float consumo, int t_aviso,
+             int t_paragem, int prob)
+    : Dispositivo(id, marca, p, prob),
+      Consumo_Hora(consumo),
+      Temp_Aviso(t_aviso),
+      Temp_Paragem(t_paragem),
+      Estado(STOP),
+      Limites{},
+      Valor_Temp_Atual(20.0f)
+{
 }
+
 
 Motor::~Motor() {}
 
@@ -52,3 +54,18 @@ void Motor::Mostrar(ostream &f) const
       << " | Consumo/h: " << Consumo_Hora << endl;
 }
 
+// ==========================================
+// SETTERS
+// ==========================================
+
+void Motor::Set_Temperatura(float temp) {
+    this->Valor_Temp_Atual = temp;
+}
+
+void Motor::Set_Estado(ESTADO_MOTOR novo_estado) {
+    this->Estado = novo_estado;
+}
+
+void Motor::Set_Limites(LimitesTemp novos_limites) {
+    this->Limites = novos_limites;
+}
