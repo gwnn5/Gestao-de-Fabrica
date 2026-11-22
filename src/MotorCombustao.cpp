@@ -1,7 +1,7 @@
 #include "MotorCombustao.h"
 
 // Implementação do construtor e métodos da classe derivada MotorCombustao
-MotorCombustao::MotorCombustao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob)
+MotorCombustao::MotorCombustao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, float prob)
     : Motor(id, marca, p, consumo, t_aviso, t_paragem, prob) {}
 
 MotorCombustao::~MotorCombustao()

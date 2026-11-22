@@ -1,6 +1,6 @@
 #include "MotorEletrico.h"
 
-MotorEletrico::MotorEletrico(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob)
+MotorEletrico::MotorEletrico(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, float prob)
     : Motor(id, marca, p, consumo, t_aviso, t_paragem, prob)
 {
 }

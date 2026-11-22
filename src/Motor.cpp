@@ -9,7 +9,7 @@
 
 Motor::Motor(int id, string marca, Posicao p,
              float consumo, int t_aviso,
-             int t_paragem, int prob)
+             int t_paragem, float prob)
     : Dispositivo(id, marca, p, prob),
       Consumo_Hora(consumo),
       Temp_Aviso(t_aviso),

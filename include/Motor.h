@@ -30,7 +30,7 @@ struct LimitesTemp {
 class Motor : public Dispositivo
 {
     public:
-        Motor(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
+        Motor(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, float prob);
         virtual ~Motor();
         void Mostrar(ostream &f) const override;
 

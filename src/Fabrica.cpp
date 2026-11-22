@@ -2,6 +2,16 @@
 #include "uteis.h"
 #include "Motor.h"
 #include "Sensor.h"
+#include "MotorCombustao.h"
+#include "MotorEletrico.h"
+#include "MotorInducao.h"
+#include "SensorHumidade.h"
+#include "SensorLuz.h"
+#include "SensorFumo.h"
+#include "SensorMissil.h"
+#include "SensorTemperatura.h"
+#include "SensorFogo.h"
+#include "XML.h"
 #include <fstream>
 #include <iostream>
 #include <cstdlib> // Necessário para usar rand() na Manutenção
@@ -184,6 +194,212 @@ void Fabrica::Listar(ostream &f)
     for (itS = listaSensores.begin(); itS != listaSensores.end(); itS++)
         (*itS)->Mostrar(f);
 }
+
+// ==============================================================================
+// LOAD DO XML
+// ==============================================================================
+
+/**
+ * @brief Lê um par "x,y" de uma tag filha e devolve-o como Posicao.
+ * @param no Nó pai (ex.: um motor).
+ * @param tag Nome da tag (ex.: "POSICAO").
+ * @return A posição lida, ou (0,0) se a tag não existir ou estiver mal escrita.
+ */
+static Posicao Ler_Posicao(const XMLNode *no, const string &tag)
+{
+    Posicao p;
+    p.x = 0;
+    p.y = 0;
+    XmlParaPar(no->Texto_De(tag), p.x, p.y);
+    return p;
+}
+
+/**
+ * @brief Lê um número inteiro de uma tag filha (aceita "85%").
+ * @return O valor lido, ou 'omissao' se não existir ou for inválido.
+ */
+static int Ler_Int(const XMLNode *no, const string &tag, int omissao = 0)
+{
+    int v;
+    if (XmlParaInt(no->Texto_De(tag), v))
+        return v;
+    return omissao;
+}
+
+/**
+ * @brief Lê um número decimal de uma tag filha (aceita "0,5" e "85%").
+ * @return O valor lido, ou 'omissao' se não existir ou for inválido.
+ */
+static float Ler_Float(const XMLNode *no, const string &tag, float omissao = 0.0f)
+{
+    float v;
+    if (XmlParaFloat(no->Texto_De(tag), v))
+        return v;
+    return omissao;
+}
+
+/**
+ * @brief Lê as faixas VERDE, AMARELO e VERMELHO de um tipo de motor.
+ * @param def Nó DEFINICOES.
+ * @param tipo Tag do tipo (MCOMBUSTAO, MELETRICO ou MINDUCAO).
+ * @param lim Recebe as três faixas.
+ * @param prob Recebe a probabilidade de avaria desse tipo.
+ * @return false se o tipo não estiver definido no XML.
+ */
+static bool Ler_Definicao_Motor(const XMLNode *def, const string &tipo, LimitesTemp &lim, float &prob)
+{
+    const XMLNode *t = def->Procurar(tipo);
+    if (t == NULL)
+        return false;
+    XmlParaPar(t->Texto_De("VERDE"), lim.verde.minimo, lim.verde.maximo);
+    XmlParaPar(t->Texto_De("AMARELO"), lim.amarelo.minimo, lim.amarelo.maximo);
+    XmlParaPar(t->Texto_De("VERMELHO"), lim.vermelho.minimo, lim.vermelho.maximo);
+    prob = Ler_Float(t, "PROB_AVARIA");
+    return true;
+}
+
+/**
+ * @brief Converte o texto do XML ("RUN", "START", ...) no enum ESTADO_MOTOR.
+ */
+static ESTADO_MOTOR Texto_Para_Estado(const string &s)
+{
+    if (s == "RUN")      return RUN;
+    if (s == "START")    return START;
+    if (s == "AVARIADO") return AVARIADO;
+    return STOP;
+}
+
+/**
+ * @brief Carrega a configuração da fábrica a partir de um ficheiro XML.
+ *
+ * Lê as definições (nome, horário, vizinhança, dimensão e faixas de
+ * temperatura de cada tipo de motor), cria os motores e os sensores
+ * e adiciona-os à fábrica com Add().
+ *
+ * @param ficheiro Caminho do ficheiro XML.
+ * @return true se o ficheiro foi lido; false se não abriu ou é inválido.
+ */
+bool Fabrica::Load(const string &ficheiro)
+{
+    string erro;
+    XMLNode *raiz = XMLNode::Carregar(ficheiro, erro);
+    if (raiz == NULL)
+    {
+        cout << "Erro no Load: " << erro << endl;
+        return false;
+    }
+
+    // ---------- 1. Definições ----------
+    LimitesTemp limComb, limElet, limInd;
+    float probComb = 0, probElet = 0, probInd = 0;
+
+    const XMLNode *def = raiz->Procurar("DEFINICOES");
+    if (def != NULL)
+    {
+        Set_Nome(def->Texto_De("NOME_EMPRESA"));
+
+        Hora abre, fecha;
+        abre.horas = Ler_Int(def, "HORA_INICIO", 8);
+        abre.minutos = 0;
+        fecha.horas = Ler_Int(def, "HORA_FECHO", 18);
+        fecha.minutos = 0;
+        Set_Horas(abre, fecha);
+
+        Set_Vizinhanca(Ler_Int(def, "VIZINHANCA_AVISO"));
+        Set_Dimensao(Ler_Posicao(def, "DIMENSAO_FABRICA"));
+
+        Ler_Definicao_Motor(def, "MCOMBUSTAO", limComb, probComb);
+        Ler_Definicao_Motor(def, "MELETRICO", limElet, probElet);
+        Ler_Definicao_Motor(def, "MINDUCAO", limInd, probInd);
+    }
+
+    // ---------- 2. Motores ----------
+    const XMLNode *mot = raiz->Procurar("MOTORES");
+    if (mot != NULL)
+    {
+        const vector<XMLNode *> &lista = mot->Get_Filhos();
+        for (size_t i = 0; i < lista.size(); i++)
+        {
+            const XMLNode *n = lista[i];
+            string tipo = XmlNormaliza(n->Get_Nome());
+
+            int id = Ler_Int(n, "ID");
+            string marca = n->Texto_De("MARCA");
+            Posicao p = Ler_Posicao(n, "POSICAO");
+            float consumo = Ler_Float(n, "CONSUMO_HORA");
+
+            // Temp_Aviso = início da faixa amarela; Temp_Paragem = início da vermelha
+            Motor *m = NULL;
+            LimitesTemp lim;
+            if (tipo == "mcombustao")
+            {
+                lim = limComb;
+                m = new MotorCombustao(id, marca, p, consumo, lim.amarelo.minimo, lim.vermelho.minimo, probComb);
+            }
+            else if (tipo == "meletrico")
+            {
+                lim = limElet;
+                m = new MotorEletrico(id, marca, p, consumo, lim.amarelo.minimo, lim.vermelho.minimo, probElet);
+            }
+            else if (tipo == "minducao")
+            {
+                lim = limInd;
+                m = new MotorInducao(id, marca, p, consumo, lim.amarelo.minimo, lim.vermelho.minimo, probInd);
+            }
+            else
+            {
+                cout << "Load: tipo de motor desconhecido '" << n->Get_Nome() << "'" << endl;
+                continue;
+            }
+
+            m->Set_Limites(lim);
+            m->Set_Temperatura(Ler_Float(n, "VALOR_TEMP_ATUAL", 20.0f));
+            m->Set_Estado(Texto_Para_Estado(n->Texto_De("ESTADO_ATUAL")));
+
+            if (!Add(m))
+                delete m;   // sem permissão: não pode ficar perdido em memória
+        }
+    }
+
+    // ---------- 3. Sensores ----------
+    const XMLNode *sen = raiz->Procurar("SENSORES");
+    if (sen != NULL)
+    {
+        const vector<XMLNode *> &lista = sen->Get_Filhos();
+        for (size_t i = 0; i < lista.size(); i++)
+        {
+            const XMLNode *n = lista[i];
+            string tipo = XmlNormaliza(n->Get_Nome());
+
+            int id = Ler_Int(n, "ID");
+            string marca = n->Texto_De("MARCA");
+            Posicao p = Ler_Posicao(n, "POSICAO");
+            float prob = Ler_Float(n, "PROB_AVARIA");
+            float aviso = Ler_Float(n, "VALOR_AVISO");
+            float atual = Ler_Float(n, "VALOR_ATUAL");
+
+            Sensor *s = NULL;
+            if (tipo == "shumidade")         s = new SensorHumidade(id, marca, p, prob, aviso, atual);
+            else if (tipo == "sluz")         s = new SensorLuz(id, marca, p, prob, aviso, atual);
+            else if (tipo == "sfumo")        s = new SensorFumo(id, marca, p, prob, aviso, atual);
+            else if (tipo == "smissil")      s = new SensorMissil(id, marca, p, prob, aviso, atual);
+            else if (tipo == "stemperatura") s = new SensorTemperatura(id, marca, p, prob, aviso, atual);
+            else if (tipo == "sfogo")        s = new SensorFogo(id, marca, p, prob, aviso, atual);
+            else
+            {
+                cout << "Load: tipo de sensor desconhecido '" << n->Get_Nome() << "'" << endl;
+                continue;
+            }
+
+            if (!Add(s))
+                delete s;
+        }
+    }
+
+    delete raiz;   // apaga a árvore do XML; os motores e sensores ficam na fábrica
+    return true;
+}
+
 
 // ==============================================================================
 // MÉTODOS DO ELEMENTO A (Ficheiros de Saída e Manutenção)

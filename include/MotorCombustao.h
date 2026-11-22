@@ -6,7 +6,7 @@
 
 class MotorCombustao : public Motor {
     public:
-        MotorCombustao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, int prob);
+        MotorCombustao(int id, string marca, Posicao p, float consumo, int t_aviso, int t_paragem, float prob);
         virtual ~MotorCombustao();
         void Run() override;
         void Start() override;
