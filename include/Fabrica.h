@@ -25,11 +25,18 @@ class Fabrica
         list<Motor *> *Listar_Tipo(string Tipo, ostream &f = std::cout);
         bool Manutencao();                 // Efetua a manutenção aos dispositivos
 
+        // Setters e getters (usados pelo Load)
+        void Set_Nome(string n);
+        void Set_Horas(Hora abertura, Hora encerramento);
+        void Set_Vizinhanca(int v);
+        void Set_Dimensao(Posicao d);
+        string Get_Nome() const;
+
         // --- MÉTODOS EM FALTA ADICIONADOS AQUI ---
-        list<string> *Ranking_Dos_Fracos(); // Devolve lista de marcas que mais avariam[cite: 9]
-        list<Motor *> *Ranking_Dos_Mais_Trabalhadores(); // Devolve lista de motores que mais trabalharam[cite: 9]
-        void Relatorio(string fich_xml); // Envia relatório XML do estado da fábrica e consumo[cite: 9]
-        void Listagem_HTML(string fich_html); // Grava ficheiro HTML com o estado atual[cite: 9]
+        list<string> *Ranking_Dos_Fracos(); // Devolve lista de marcas que mais avariam
+        list<Motor *> *Ranking_Dos_Mais_Trabalhadores(); // Devolve lista de motores que mais trabalharam
+        void Relatorio(string fich_xml); // Envia relatório XML do estado da fábrica e consumo
+        void Listagem_HTML(string fich_html); // Grava ficheiro HTML com o estado atual
         // -----------------------------------------
 
         // Métodos de alerta gerados pelos sensores e respetivas reações
@@ -43,7 +50,11 @@ class Fabrica
         Hora Hora_abertura;
         Hora Hora_encerramento;
 
+        int Vizinhanca;              // Raio usado no aviso de humidade
+        Posicao Dimensao;            // Dimensão da fábrica (X, Y)
+
         User* utilizadorAtual;       // Apontador para o utilizador a operar o sistema no momento
+        list<User*> listaUsers;      // Utilizadores registados (não são apagados pela fábrica)
         list<Motor*> listaMotores;
         list<Sensor*> listaSensores;
 };
