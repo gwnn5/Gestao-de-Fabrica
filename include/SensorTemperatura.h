@@ -2,7 +2,7 @@
 #define SENSORTEMPERATURA_H
 #include "Sensor.h"
 
-/** @brief Sensor de temperatura ambiente. */
+// Sensor de temperatura ambiente.
 class SensorTemperatura : public Sensor {
 public:
     SensorTemperatura(int id, string marca, Posicao pos, float prob, float valor_aviso, float valor_atual);

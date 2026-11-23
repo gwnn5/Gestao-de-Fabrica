@@ -9,12 +9,9 @@ using namespace std;
 
 class Fabrica;
 
-/**
- * @brief Classe abstrata de todos os sensores.
- *
- * Um sensor guarda a última leitura e o valor a partir do qual dispara
- * um aviso. Uma leitura de -1 significa que o sensor está avariado.
- */
+// Classe abstrata de todos os sensores.
+// Um sensor guarda a última leitura e o valor a partir do qual dispara
+// um aviso. Uma leitura de -1 significa que o sensor está avariado.
 class Sensor : public Dispositivo {
     protected:
         float valor_aviso;   // A partir deste valor o sensor está em alerta
@@ -27,16 +24,16 @@ class Sensor : public Dispositivo {
         virtual ~Sensor();
         
         float Get_Valor() const;
-        /** @brief true se a leitura atual atingiu o valor de aviso. */
+        // true se a leitura atual atingiu o valor de aviso.
         virtual bool Em_Alerta() const;
         
-        /** @brief Etiqueta XML do tipo (SHUMIDADE, SLUZ, ...). Virtual pura: cada sensor define a sua. */
+        // Etiqueta XML do tipo (SHUMIDADE, SLUZ, ...). Virtual pura: cada sensor define a sua.
         virtual string Get_Tipo() const = 0; 
 
-        /** @brief Leitura em texto para o XML e o HTML ("AVARIA" se avariado). */
+        // Leitura em texto para o XML e o HTML ("AVARIA" se avariado).
         virtual string GetValorAtualString() const; 
 
-        /** @brief Simula uma leitura: o sensor pode avariar ou o valor varia um pouco. */
+        // Simula uma leitura: o sensor pode avariar ou o valor varia um pouco.
         virtual void Run();
         
         void Mostrar(ostream &f) const override;

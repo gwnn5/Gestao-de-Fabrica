@@ -4,24 +4,21 @@
 #include "uteis.h"
 class Fabrica;
 
-/**
- * @brief Classe base de tudo o que está instalado na fábrica (motores e sensores).
- *
- * Guarda os dados comuns a todos os dispositivos, para não os repetir
- * em Motor e em Sensor.
- */
+// Classe base de tudo o que está instalado na fábrica (motores e sensores).
+// Guarda os dados comuns a todos os dispositivos, para não os repetir
+// em Motor e em Sensor.
 class Dispositivo
 {
     public:
         Dispositivo();
-        /** @brief Construtor chamado pelas subclasses na lista de inicialização. */
+        // Construtor chamado pelas subclasses na lista de inicialização.
         Dispositivo(int id, string marca, Posicao p, float prob);
-        /** @brief Virtual para que delete através de um ponteiro da base chame o destrutor certo. */
+        // Virtual para que delete através de um ponteiro da base chame o destrutor certo.
         virtual ~Dispositivo();
         
-        /** @brief Liga o dispositivo à fábrica que o gere (chamado por Fabrica::Add). */
+        // Liga o dispositivo à fábrica que o gere (chamado por Fabrica::Add).
         void Atribuir_Fabrica(Fabrica *_F) { Fab = _F; }
-        /** @brief Escreve ID, marca e posição; as subclasses acrescentam os seus dados. */
+        // Escreve ID, marca e posição; as subclasses acrescentam os seus dados.
         virtual void Mostrar(ostream &f) const;
 
         int Get_Id() const { return Id; }

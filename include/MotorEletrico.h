@@ -3,11 +3,8 @@
 
 #include "Motor.h"
 
-/**
- * @brief Motor de elétrico.
- *
- * Implementa as mudanças de estado e identifica-se no XML como MELETRICO.
- */
+// Motor de elétrico.
+// Implementa as mudanças de estado e identifica-se no XML como MELETRICO.
 class MotorEletrico : public Motor
 {
       public:

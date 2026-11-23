@@ -2,7 +2,7 @@
 #define SENSORLUZ_H
 #include "Sensor.h"
 
-/** @brief Sensor de luz. */
+// Sensor de luz.
 class SensorLuz : public Sensor {
 public:
     SensorLuz(int id, string marca, Posicao pos, float prob, float valor_aviso, float valor_atual);

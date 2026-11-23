@@ -3,11 +3,8 @@
 
 #include "Motor.h"
 
-/**
- * @brief Motor de indução.
- *
- * Implementa as mudanças de estado e identifica-se no XML como MINDUCAO.
- */
+// Motor de indução.
+// Implementa as mudanças de estado e identifica-se no XML como MINDUCAO.
 class MotorInducao : public Motor
 {
       public:

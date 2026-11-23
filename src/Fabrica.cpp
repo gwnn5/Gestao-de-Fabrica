@@ -22,12 +22,9 @@ using namespace std;
 // FUNÇÕES AUXILIARES (enums para texto)
 // ==============================================================================
 
-/**
- * @brief Converte o enumerador ESTADO_MOTOR para uma string reconhecida pelo simulador XML.
- *
- * @param e O estado atual do motor (STOP, START, RUN, AVARIADO).
- * @return string com o texto exato exigido pelas tags do simulador gráfico.
- */
+// Converte o enumerador ESTADO_MOTOR para uma string reconhecida pelo simulador XML.
+// e: O estado atual do motor (STOP, START, RUN, AVARIADO).
+// Devolve string com o texto exato exigido pelas tags do simulador gráfico.
 string EstadoParaString(ESTADO_MOTOR e) {
     switch(e) {
         case STOP: return "STOP";
@@ -38,12 +35,9 @@ string EstadoParaString(ESTADO_MOTOR e) {
     }
 }
 
-/**
- * @brief Converte o enumerador CLASSE_TEMP para uma string de cor reconhecida pelo simulador XML.
- *
- * @param c A classe de temperatura atual do motor (VERDE, AMARELO, VERMELHO).
- * @return string com a cor correspondente para visualização no simulador.
- */
+// Converte o enumerador CLASSE_TEMP para uma string de cor reconhecida pelo simulador XML.
+// c: A classe de temperatura atual do motor (VERDE, AMARELO, VERMELHO).
+// Devolve string com a cor correspondente para visualização no simulador.
 string CorParaString(CLASSE_TEMP c) {
     switch(c) {
         case VERDE: return "VERDE";
@@ -57,10 +51,8 @@ string CorParaString(CLASSE_TEMP c) {
 // GESTÃO DA FÁBRICA
 // ==============================================================================
 
-/**
- * @brief Cria a fábrica com valores por omissão (o Load substitui-os pelos do XML).
- * @param ut Utilizador que está a operar o sistema.
- */
+// Cria a fábrica com valores por omissão (o Load substitui-os pelos do XML).
+// ut: Utilizador que está a operar o sistema.
 Fabrica::Fabrica(User *ut)
 {
     utilizadorAtual = ut;
@@ -74,9 +66,7 @@ Fabrica::Fabrica(User *ut)
     Dimensao.y = 0;
 }
 
-/**
- * @brief Liberta a memória de todos os motores e sensores da fábrica.
- */
+// Liberta a memória de todos os motores e sensores da fábrica.
 Fabrica::~Fabrica()
 {
     list<Motor *>::iterator itM;
@@ -103,10 +93,8 @@ void Fabrica::Set_Vizinhanca(int v) { Vizinhanca = v; }
 void Fabrica::Set_Dimensao(Posicao d) { Dimensao = d; }
 string Fabrica::Get_Nome() const { return Nome; }
 
-/**
- * @brief Procura um motor pelo ID.
- * @return Apontador para o motor, ou NULL se não existir.
- */
+// Procura um motor pelo ID.
+// Devolve apontador para o motor, ou NULL se não existir.
 Motor *Fabrica::Procurar_Motor(int id)
 {
     list<Motor *>::iterator it;
@@ -118,9 +106,7 @@ Motor *Fabrica::Procurar_Motor(int id)
     return NULL;
 }
 
-/**
- * @brief Adiciona um utilizador, se o utilizador atual tiver permissão.
- */
+// Adiciona um utilizador, se o utilizador atual tiver permissão.
 bool Fabrica::Add(User *ut)
 {
     if (ut == NULL || utilizadorAtual == NULL || !utilizadorAtual->PodeAdicionar())
@@ -129,9 +115,7 @@ bool Fabrica::Add(User *ut)
     return true;
 }
 
-/**
- * @brief Adiciona um motor, se o utilizador atual tiver permissão.
- */
+// Adiciona um motor, se o utilizador atual tiver permissão.
 bool Fabrica::Add(Motor *m)
 {
     if (m == NULL || utilizadorAtual == NULL || !utilizadorAtual->PodeAdicionar())
@@ -141,9 +125,7 @@ bool Fabrica::Add(Motor *m)
     return true;
 }
 
-/**
- * @brief Adiciona um sensor, se o utilizador atual tiver permissão.
- */
+// Adiciona um sensor, se o utilizador atual tiver permissão.
 bool Fabrica::Add(Sensor *s)
 {
     if (s == NULL || utilizadorAtual == NULL || !utilizadorAtual->PodeAdicionar())
@@ -153,9 +135,7 @@ bool Fabrica::Add(Sensor *s)
     return true;
 }
 
-/**
- * @brief Desliga (STOP) o motor com o ID indicado, se existir.
- */
+// Desliga (STOP) o motor com o ID indicado, se existir.
 void Fabrica::Desligar(int id_motor)
 {
     Motor *m = Procurar_Motor(id_motor);
@@ -163,9 +143,7 @@ void Fabrica::Desligar(int id_motor)
         m->Stop();
 }
 
-/**
- * @brief Devolve o estado de um motor (STOP se não existir).
- */
+// Devolve o estado de um motor (STOP se não existir).
 ESTADO_MOTOR Fabrica::Get_Estado(int id_motor)
 {
     Motor *m = Procurar_Motor(id_motor);
@@ -174,10 +152,8 @@ ESTADO_MOTOR Fabrica::Get_Estado(int id_motor)
     return STOP;
 }
 
-/**
- * @brief Lista a fábrica: nome, horário, motores e sensores.
- * @param f Stream de saída (por omissão, o ecrã).
- */
+// Lista a fábrica: nome, horário, motores e sensores.
+// f: Stream de saída (por omissão, o ecrã).
 void Fabrica::Listar(ostream &f)
 {
     f << "=== Fabrica: " << Nome << " ===" << endl;
@@ -199,12 +175,10 @@ void Fabrica::Listar(ostream &f)
 // LOAD DO XML
 // ==============================================================================
 
-/**
- * @brief Lê um par "x,y" de uma tag filha e devolve-o como Posicao.
- * @param no Nó pai (ex.: um motor).
- * @param tag Nome da tag (ex.: "POSICAO").
- * @return A posição lida, ou (0,0) se a tag não existir ou estiver mal escrita.
- */
+// Lê um par "x,y" de uma tag filha e devolve-o como Posicao.
+// no: Nó pai (ex.: um motor).
+// tag: Nome da tag (ex.: "POSICAO").
+// Devolve a posição lida, ou (0,0) se a tag não existir ou estiver mal escrita.
 static Posicao Ler_Posicao(const XMLNode *no, const string &tag)
 {
     Posicao p;
@@ -214,10 +188,8 @@ static Posicao Ler_Posicao(const XMLNode *no, const string &tag)
     return p;
 }
 
-/**
- * @brief Lê um número inteiro de uma tag filha (aceita "85%").
- * @return O valor lido, ou 'omissao' se não existir ou for inválido.
- */
+// Lê um número inteiro de uma tag filha (aceita "85%").
+// Devolve o valor lido, ou 'omissao' se não existir ou for inválido.
 static int Ler_Int(const XMLNode *no, const string &tag, int omissao = 0)
 {
     int v;
@@ -226,10 +198,8 @@ static int Ler_Int(const XMLNode *no, const string &tag, int omissao = 0)
     return omissao;
 }
 
-/**
- * @brief Lê um número decimal de uma tag filha (aceita "0,5" e "85%").
- * @return O valor lido, ou 'omissao' se não existir ou for inválido.
- */
+// Lê um número decimal de uma tag filha (aceita "0,5" e "85%").
+// Devolve o valor lido, ou 'omissao' se não existir ou for inválido.
 static float Ler_Float(const XMLNode *no, const string &tag, float omissao = 0.0f)
 {
     float v;
@@ -238,14 +208,12 @@ static float Ler_Float(const XMLNode *no, const string &tag, float omissao = 0.0
     return omissao;
 }
 
-/**
- * @brief Lê as faixas VERDE, AMARELO e VERMELHO de um tipo de motor.
- * @param def Nó DEFINICOES.
- * @param tipo Tag do tipo (MCOMBUSTAO, MELETRICO ou MINDUCAO).
- * @param lim Recebe as três faixas.
- * @param prob Recebe a probabilidade de avaria desse tipo.
- * @return false se o tipo não estiver definido no XML.
- */
+// Lê as faixas VERDE, AMARELO e VERMELHO de um tipo de motor.
+// def: Nó DEFINICOES.
+// tipo: Tag do tipo (MCOMBUSTAO, MELETRICO ou MINDUCAO).
+// lim: Recebe as três faixas.
+// prob: Recebe a probabilidade de avaria desse tipo.
+// Devolve false se o tipo não estiver definido no XML.
 static bool Ler_Definicao_Motor(const XMLNode *def, const string &tipo, LimitesTemp &lim, float &prob)
 {
     const XMLNode *t = def->Procurar(tipo);
@@ -258,9 +226,7 @@ static bool Ler_Definicao_Motor(const XMLNode *def, const string &tipo, LimitesT
     return true;
 }
 
-/**
- * @brief Converte o texto do XML ("RUN", "START", ...) no enum ESTADO_MOTOR.
- */
+// Converte o texto do XML ("RUN", "START", ...) no enum ESTADO_MOTOR.
 static ESTADO_MOTOR Texto_Para_Estado(const string &s)
 {
     if (s == "RUN")      return RUN;
@@ -269,16 +235,12 @@ static ESTADO_MOTOR Texto_Para_Estado(const string &s)
     return STOP;
 }
 
-/**
- * @brief Carrega a configuração da fábrica a partir de um ficheiro XML.
- *
- * Lê as definições (nome, horário, vizinhança, dimensão e faixas de
- * temperatura de cada tipo de motor), cria os motores e os sensores
- * e adiciona-os à fábrica com Add().
- *
- * @param ficheiro Caminho do ficheiro XML.
- * @return true se o ficheiro foi lido; false se não abriu ou é inválido.
- */
+// Carrega a configuração da fábrica a partir de um ficheiro XML.
+// Lê as definições (nome, horário, vizinhança, dimensão e faixas de
+// temperatura de cada tipo de motor), cria os motores e os sensores
+// e adiciona-os à fábrica com Add().
+// ficheiro: Caminho do ficheiro XML.
+// Devolve true se o ficheiro foi lido; false se não abriu ou é inválido.
 bool Fabrica::Load(const string &ficheiro)
 {
     string erro;
@@ -405,15 +367,11 @@ bool Fabrica::Load(const string &ficheiro)
 // RELATÓRIOS E MANUTENÇÃO
 // ==============================================================================
 
-/**
- * @brief Gera um relatório em formato XML com o estado atual de todos os dispositivos da fábrica.
- *
- * Este método cria um ficheiro XML compatível com o simulador gráfico fornecido,
- * listando todos os motores e sensores, os seus estados atuais e valores.
- * No final, inclui o consumo total de todos os motores no dia.
- *
- * @param fich_xml O nome ou caminho do ficheiro XML a ser gerado (ex: "Relatorio.xml").
- */
+// Gera um relatório em formato XML com o estado atual de todos os dispositivos da fábrica.
+// Este método cria um ficheiro XML compatível com o simulador gráfico fornecido,
+// listando todos os motores e sensores, os seus estados atuais e valores.
+// No final, inclui o consumo total de todos os motores no dia.
+// fich_xml: O nome ou caminho do ficheiro XML a ser gerado (ex: "Relatorio.xml").
 void Fabrica::Relatorio(string fich_xml) {
     ofstream out(fich_xml.c_str());
     if (!out.is_open()) {
@@ -481,14 +439,10 @@ void Fabrica::Relatorio(string fich_xml) {
     cout << "Relatorio XML guardado com sucesso: " << fich_xml << endl;
 }
 
-/**
- * @brief Gera uma página HTML simples para ver o estado da fábrica no browser.
- *
- * Uma tabela para os motores (temperatura, estado e cor) e outra para os
- * sensores (valor atual e se estão em alerta).
- *
- * @param fich_html Nome do ficheiro HTML a gerar.
- */
+// Gera uma página HTML simples para ver o estado da fábrica no browser.
+// Uma tabela para os motores (temperatura, estado e cor) e outra para os
+// sensores (valor atual e se estão em alerta).
+// fich_html: Nome do ficheiro HTML a gerar.
 void Fabrica::Listagem_HTML(string fich_html) {
     ofstream out(fich_html.c_str());
     if (!out.is_open()) {
@@ -535,14 +489,10 @@ void Fabrica::Listagem_HTML(string fich_html) {
     cout << "Listagem HTML gerada com sucesso: " << fich_html << endl;
 }
 
-/**
- * @brief Manutenção de todos os dispositivos.
- *
- * Cada motor volta a uma temperatura aleatória dentro da sua faixa verde
- * e fica em RUN.
- *
- * @return true se interveio em pelo menos um dispositivo.
- */
+// Manutenção de todos os dispositivos.
+// Cada motor volta a uma temperatura aleatória dentro da sua faixa verde
+// e fica em RUN.
+// Devolve true se interveio em pelo menos um dispositivo.
 bool Fabrica::Manutencao() {
     bool houve_manutencao = false;
 

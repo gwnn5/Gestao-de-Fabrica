@@ -3,12 +3,9 @@
 #include <string>
 using namespace std;
 
-/**
- * @brief Classe abstrata de utilizador.
- *
- * Cada tipo de utilizador responde de forma diferente às perguntas de
- * permissão. A fábrica consulta-as antes de cada operação (ex.: Add).
- */
+// Classe abstrata de utilizador.
+// Cada tipo de utilizador responde de forma diferente às perguntas de
+// permissão. A fábrica consulta-as antes de cada operação (ex.: Add).
 class User {
     protected:
         int Id;
@@ -25,7 +22,7 @@ class User {
         virtual bool PodeManutencao() const = 0;
 };
 
-/** @brief Pode fazer tudo. */
+// Pode fazer tudo.
 class Admin : public User {
     public:
         Admin(int id, string nome) : User(id, nome) {}
@@ -36,7 +33,7 @@ class Admin : public User {
         bool PodeManutencao() const override { return true; }
 };
 
-/** @brief Pode fazer tudo exceto remover. */
+// Pode fazer tudo exceto remover.
 class Normal : public User {
     public:
         Normal(int id, string nome) : User(id, nome) {}
@@ -47,7 +44,7 @@ class Normal : public User {
         bool PodeManutencao() const override { return true; }
 };
 
-/** @brief Só pode listar. */
+// Só pode listar.
 class Visitante : public User {
     public:
         Visitante(int id, string nome) : User(id, nome) {}

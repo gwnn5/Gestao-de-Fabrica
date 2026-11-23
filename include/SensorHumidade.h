@@ -3,7 +3,7 @@
 
 #include "Sensor.h"
 
-/** @brief Sensor de humidade. No XML o valor aparece em percentagem (ex.: "85%"). */
+// Sensor de humidade. No XML o valor aparece em percentagem (ex.: "85%").
 class SensorHumidade : public Sensor {
 public:
     SensorHumidade(int id, string marca, Posicao p, float prob, float valor_aviso, float valor_atual);

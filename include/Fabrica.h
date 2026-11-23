@@ -7,38 +7,35 @@
 #include <list>
 #include <string>
 
-/**
- * @brief Gere a fábrica e todos os seus dispositivos.
- *
- * É dona dos motores e dos sensores: recebe-os com Add e apaga-os no
- * destrutor. Antes de alterar a fábrica verifica as permissões do
- * utilizador atual. Os utilizadores só são guardados, não apagados.
- */
+// Gere a fábrica e todos os seus dispositivos.
+// É dona dos motores e dos sensores: recebe-os com Add e apaga-os no
+// destrutor. Antes de alterar a fábrica verifica as permissões do
+// utilizador atual. Os utilizadores só são guardados, não apagados.
 class Fabrica
 {
     public:
         Fabrica(User *ut);
         virtual ~Fabrica();
-        /** @brief Avisa o gestor sobre um problema no dispositivo com este ID. */
+        // Avisa o gestor sobre um problema no dispositivo com este ID.
         void Avisar_gestor(int _id);
 
-        /** @brief Motor com este ID, ou NULL se não existir. */
+        // Motor com este ID, ou NULL se não existir.
         Motor *Procurar_Motor(int id);
-        /** @brief Carrega a configuração, os motores e os sensores de um ficheiro XML. */
+        // Carrega a configuração, os motores e os sensores de um ficheiro XML.
         bool Load(const string &ficheiro);
         // Os Add só aceitam se o utilizador atual tiver permissão para adicionar
         bool Add(User *ut);
         bool Add(Motor *m);
         bool Add(Sensor *s);
-        /** @brief Escreve o nome, o horário e todos os motores e sensores. */
+        // Escreve o nome, o horário e todos os motores e sensores.
         void Listar(ostream &f = std::cout);
-        /** @brief Põe em STOP o motor com este ID (não faz nada se não existir). */
+        // Põe em STOP o motor com este ID (não faz nada se não existir).
         void Desligar(int id_motor);
-        /** @brief Estado do motor com este ID (STOP se não existir). */
+        // Estado do motor com este ID (STOP se não existir).
         ESTADO_MOTOR Get_Estado(int id_motor);
-        /** @brief Lista nova com os motores do tipo pedido; quem chama apaga a lista, não os motores. */
+        // Lista nova com os motores do tipo pedido; quem chama apaga a lista, não os motores.
         list<Motor *> *Listar_Tipo(string Tipo, ostream &f = std::cout);
-        /** @brief Repõe os motores numa temperatura normal. Devolve true se interveio em algum dispositivo. */
+        // Repõe os motores numa temperatura normal. Devolve true se interveio em algum dispositivo.
         bool Manutencao();
 
         // Setters e getters usados pelo Load
@@ -48,13 +45,13 @@ class Fabrica
         void Set_Dimensao(Posicao d);
         string Get_Nome() const;
 
-        /** @brief Marcas que mais avariam. */
+        // Marcas que mais avariam.
         list<string> *Ranking_Dos_Fracos();
-        /** @brief Motores que mais horas trabalharam. */
+        // Motores que mais horas trabalharam.
         list<Motor *> *Ranking_Dos_Mais_Trabalhadores();
-        /** @brief Grava em XML o estado de todos os dispositivos e o consumo do dia. */
+        // Grava em XML o estado de todos os dispositivos e o consumo do dia.
         void Relatorio(string fich_xml);
-        /** @brief Grava uma página HTML com o estado atual da fábrica. */
+        // Grava uma página HTML com o estado atual da fábrica.
         void Listagem_HTML(string fich_html);
 
         // Reações aos avisos dos sensores

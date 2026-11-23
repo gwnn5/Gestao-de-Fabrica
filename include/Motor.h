@@ -3,29 +3,26 @@
 #include "uteis.h"
 #include "Dispositivo.h"
 
-/** @brief Estados possíveis de um motor. */
+// Estados possíveis de um motor.
 enum ESTADO_MOTOR { STOP, START, RUN, AVARIADO };
-/** @brief Classe (cor) de temperatura de um motor. */
+// Classe (cor) de temperatura de um motor.
 enum CLASSE_TEMP  { VERDE, AMARELO, VERMELHO };
 
 class Fabrica;
 
-/** @brief Intervalo de temperaturas [minimo, maximo], lido do XML como "0, 80". */
+// Intervalo de temperaturas [minimo, maximo], lido do XML como "0, 80".
 struct Faixa {
     int minimo;
     int maximo;
 };
 
-/** @brief As três faixas de temperatura de um tipo de motor. */
+// As três faixas de temperatura de um tipo de motor.
 struct LimitesTemp {
     Faixa verde, amarelo, vermelho;
 
-    /**
-     * @brief Devolve a cor correspondente a uma temperatura.
-     *
-     * Compara do mais quente para o mais frio: basta passar o início
-     * de uma faixa para pertencer a ela.
-     */
+    // Devolve a cor correspondente a uma temperatura.
+    // Compara do mais quente para o mais frio: basta passar o início
+    // de uma faixa para pertencer a ela.
     CLASSE_TEMP Classificar(float temp) const
     {
         if (temp >= vermelho.minimo) return VERMELHO;
@@ -34,12 +31,9 @@ struct LimitesTemp {
     }
 };
 
-/**
- * @brief Classe abstrata de todos os motores.
- *
- * Não se cria um Motor genérico: só MotorCombustao, MotorEletrico e
- * MotorInducao, que implementam os métodos virtuais puros.
- */
+// Classe abstrata de todos os motores.
+// Não se cria um Motor genérico: só MotorCombustao, MotorEletrico e
+// MotorInducao, que implementam os métodos virtuais puros.
 class Motor : public Dispositivo
 {
     public:
@@ -47,7 +41,7 @@ class Motor : public Dispositivo
         virtual ~Motor();
         void Mostrar(ostream &f) const override;
 
-        /** @brief Etiqueta XML do tipo: "MCOMBUSTAO", "MELETRICO" ou "MINDUCAO". */
+        // Etiqueta XML do tipo: "MCOMBUSTAO", "MELETRICO" ou "MINDUCAO".
         virtual string Get_Tipo() const = 0;
         ESTADO_MOTOR Get_Estado() const { return Estado; }
 
@@ -56,15 +50,15 @@ class Motor : public Dispositivo
         virtual void Start() = 0;
         virtual void Restart() = 0;
         virtual void Stop() = 0;
-        /** @brief true se a temperatura atual já atingiu a temperatura de aviso. */
+        // true se a temperatura atual já atingiu a temperatura de aviso.
         virtual bool Estou_Quente() = 0;
 
         float Get_Temperatura() const { return Valor_Temp_Atual; }
         float Get_Consumo() const { return Consumo_Hora; }
-        /** @brief Cor atual, calculada a partir da temperatura e das faixas do tipo. */
+        // Cor atual, calculada a partir da temperatura e das faixas do tipo.
         CLASSE_TEMP Get_Classe_Temp() const { return Limites.Classificar(Valor_Temp_Atual); }
 
-        /** @brief Usado na manutenção para repor uma temperatura normal. */
+        // Usado na manutenção para repor uma temperatura normal.
         Faixa Get_Faixa_Verde() const { return Limites.verde; }
 
         // Ainda sem implementação: o Relatorio usa EstadoParaString e
@@ -84,7 +78,7 @@ class Motor : public Dispositivo
         ESTADO_MOTOR Estado;
         LimitesTemp Limites;      // Faixas de temperatura do tipo deste motor
         float Valor_Temp_Atual;
-        /** @brief Textos usados pelo Mostrar. */
+        // Textos usados pelo Mostrar.
         string Estado_Para_Texto() const;
         string Classe_Para_Texto() const;
 };

@@ -1,11 +1,8 @@
 #ifndef XML_H
 #define XML_H
 
-/**
- * @file XML.h
- * @brief Leitor de XML simples: transforma o ficheiro numa arvore de XMLNode
- *        e converte os textos lidos em numeros.
- */
+// Leitor de XML simples: transforma o ficheiro numa arvore de XMLNode
+// e converte os textos lidos em numeros.
 #include <string>
 #include <vector>
 
