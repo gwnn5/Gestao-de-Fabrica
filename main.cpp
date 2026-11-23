@@ -6,6 +6,7 @@ using namespace std;
 
 int main()
 {
+    // O Load usa Add, por isso o utilizador tem de ter permissão para adicionar
     Admin *admin = new Admin(1, "admin");
     Fabrica *fab = new Fabrica(admin);
 
@@ -14,7 +15,7 @@ int main()
     else
         cout << "Nao foi possivel carregar a fabrica." << endl;
 
-    delete fab;     // apaga motores e sensores
-    delete admin;
+    delete fab;     // Apaga também os motores e os sensores
+    delete admin;   // A fábrica não apaga os utilizadores
     return 0;
 }

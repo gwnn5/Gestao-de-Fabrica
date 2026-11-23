@@ -3,6 +3,12 @@
 #include <string>
 using namespace std;
 
+/**
+ * @brief Classe abstrata de utilizador.
+ *
+ * Cada tipo de utilizador responde de forma diferente às perguntas de
+ * permissão. A fábrica consulta-as antes de cada operação (ex.: Add).
+ */
 class User {
     protected:
         int Id;
@@ -11,7 +17,7 @@ class User {
         User(int id, string nome) : Id(id), Nome(nome) {}
         virtual ~User() {}
         
-        // Interfaces virtuais para verificar as permissões do utilizador
+        // Permissões: virtuais puras, cada tipo de utilizador define as suas
         virtual bool PodeAdicionar() const = 0;
         virtual bool PodeRemover() const = 0;
         virtual bool PodeListar() const = 0;
@@ -19,7 +25,7 @@ class User {
         virtual bool PodeManutencao() const = 0;
 };
 
-// Utilizador com privilégios máximos (Pode fazer tudo)
+/** @brief Pode fazer tudo. */
 class Admin : public User {
     public:
         Admin(int id, string nome) : User(id, nome) {}
@@ -30,24 +36,24 @@ class Admin : public User {
         bool PodeManutencao() const override { return true; }
 };
 
-// Utilizador com privilégios normais
+/** @brief Pode fazer tudo exceto remover. */
 class Normal : public User {
     public:
         Normal(int id, string nome) : User(id, nome) {}
         bool PodeAdicionar() const override { return true; }
-        bool PodeRemover() const override { return false; } // Não pode remover
+        bool PodeRemover() const override { return false; }
         bool PodeListar() const override { return true; }
         bool PodeRun() const override { return true; }
         bool PodeManutencao() const override { return true; }
 };
 
-// Utilizador visitante (Permissões restritas, geralmente apenas visualização)
+/** @brief Só pode listar. */
 class Visitante : public User {
     public:
         Visitante(int id, string nome) : User(id, nome) {}
         bool PodeAdicionar() const override { return false; }
         bool PodeRemover() const override { return false; }
-        bool PodeListar() const override { return true; } // Apenas listar
+        bool PodeListar() const override { return true; }
         bool PodeRun() const override { return false; }
         bool PodeManutencao() const override { return false; }
 };

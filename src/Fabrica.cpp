@@ -14,12 +14,12 @@
 #include "XML.h"
 #include <fstream>
 #include <iostream>
-#include <cstdlib> // Necessário para usar rand() na Manutenção
+#include <cstdlib>   // rand(), usado na Manutenção
 
 using namespace std;
 
 // ==============================================================================
-// FUNÇÕES AUXILIARES
+// FUNÇÕES AUXILIARES (enums para texto)
 // ==============================================================================
 
 /**
@@ -54,7 +54,7 @@ string CorParaString(CLASSE_TEMP c) {
 }
 
 // ==============================================================================
-// MÉTODOS DO ELEMENTO B (Gestão da fábrica)
+// GESTÃO DA FÁBRICA
 // ==============================================================================
 
 /**
@@ -402,7 +402,7 @@ bool Fabrica::Load(const string &ficheiro)
 
 
 // ==============================================================================
-// MÉTODOS DO ELEMENTO A (Ficheiros de Saída e Manutenção)
+// RELATÓRIOS E MANUTENÇÃO
 // ==============================================================================
 
 /**
@@ -453,7 +453,7 @@ void Fabrica::Relatorio(string fich_xml) {
     out << "\t<SENSORES>\n";
     for (list<Sensor *>::iterator itS = listaSensores.begin(); itS != listaSensores.end(); itS++) {
         Sensor *s = *itS;
-        string tipo = s->Get_Tipo(); // Devolve a etiqueta XML, ex: "SHUMIDADE"
+        string tipo = s->Get_Tipo();   // Etiqueta XML, ex.: "SHUMIDADE"
         out << "\t\t<" << tipo << ">\n";
         out << "\t\t\t<ID>" << s->Get_Id() << "</ID>\n";
         out << "\t\t\t<MARCA>" << s->Get_Marca() << "</MARCA>\n";
@@ -461,10 +461,10 @@ void Fabrica::Relatorio(string fich_xml) {
         Posicao p = s->Get_Pos();
         out << "\t\t\t<POSICAO>" << p.x << "," << p.y << "</POSICAO>\n";
 
-        // Tag obrigatória de Aviso (adicionado)
+        // Valor a partir do qual o sensor dispara o aviso
         out << "\t\t\t<VALOR_AVISO>" << s->Get_Aviso() << "</VALOR_AVISO>\n";
 
-        // Tag obrigatória para mostrar o valor lido pelo sensor no simulador (usa o método formatado '%')
+        // Valor lido, já formatado (a humidade leva '%', avariado dá "AVARIA")
         out << "\t\t\t<VALOR_ATUAL>" << s->GetValorAtualString() << "</VALOR_ATUAL>\n";
         out << "\t\t</" << tipo << ">\n";
     }
@@ -482,7 +482,12 @@ void Fabrica::Relatorio(string fich_xml) {
 }
 
 /**
- * @brief Gera uma página HTML simples para visualização do estado da fábrica no browser.
+ * @brief Gera uma página HTML simples para ver o estado da fábrica no browser.
+ *
+ * Uma tabela para os motores (temperatura, estado e cor) e outra para os
+ * sensores (valor atual e se estão em alerta).
+ *
+ * @param fich_html Nome do ficheiro HTML a gerar.
  */
 void Fabrica::Listagem_HTML(string fich_html) {
     ofstream out(fich_html.c_str());
@@ -530,19 +535,25 @@ void Fabrica::Listagem_HTML(string fich_html) {
     cout << "Listagem HTML gerada com sucesso: " << fich_html << endl;
 }
 
+/**
+ * @brief Manutenção de todos os dispositivos.
+ *
+ * Cada motor volta a uma temperatura aleatória dentro da sua faixa verde
+ * e fica em RUN.
+ *
+ * @return true se interveio em pelo menos um dispositivo.
+ */
 bool Fabrica::Manutencao() {
     bool houve_manutencao = false;
 
     // 1. Manutenção dos Motores
     for (list<Motor *>::iterator itM = listaMotores.begin(); itM != listaMotores.end(); itM++) {
         Motor *m = *itM;
-        // Obter a faixa verde do motor
         Faixa verde = m->Get_Faixa_Verde();
 
-        // Gerar uma temperatura aleatória dentro do intervalo [minimo, maximo] da faixa verde
+        // Temperatura aleatória dentro de [minimo, maximo] da faixa verde
         float nova_temp = verde.minimo + (rand() % (verde.maximo - verde.minimo + 1));
 
-        // Atualizar a temperatura e estado do motor
         m->Set_Temperatura(nova_temp);
         m->Set_Estado(RUN);
         houve_manutencao = true;
@@ -551,10 +562,9 @@ bool Fabrica::Manutencao() {
     // 2. Manutenção dos Sensores
     for (list<Sensor *>::iterator itS = listaSensores.begin(); itS != listaSensores.end(); itS++) {
         Sensor *s = *itS;
-        // Se o sensor estiver avariado (valor == -1), a manutenção deve repará-lo
+        // Um sensor avariado (valor -1) deve ser reparado.
+        // Ainda não é: falta no Sensor um setter para repor o valor.
         if (s->Get_Valor() == -1) {
-            // NOTA: Se quiseres que a reparação funcione a 100%,
-            // precisas de garantir que existe um método para repor o valor, ex: s->Set_Valor(0);
             houve_manutencao = true;
         }
     }

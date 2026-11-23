@@ -2,11 +2,8 @@
 #include <iostream>
 #include <cstdlib>
 
-// ==========================================
-// IMPLEMENTAÇÃO DA CLASSE BASE: Motor
-// ==========================================
-
-
+// O motor começa parado e a 20°. As faixas ficam a zero até ao
+// Set_Limites, que o Load chama com as faixas do tipo do motor.
 Motor::Motor(int id, string marca, Posicao p,
              float consumo, int t_aviso,
              int t_paragem, float prob)
@@ -48,15 +45,11 @@ string Motor::Classe_Para_Texto() const
 
 void Motor::Mostrar(ostream &f) const
 {
-    Dispositivo::Mostrar(f);   // imprime ID, marca e posicao
+    Dispositivo::Mostrar(f);   // Primeiro os dados comuns: ID, marca e posição
     f << " | Estado: " << Estado_Para_Texto()
       << " | Temp: " << Valor_Temp_Atual << " (" << Classe_Para_Texto() << ")"
       << " | Consumo/h: " << Consumo_Hora << endl;
 }
-
-// ==========================================
-// SETTERS
-// ==========================================
 
 void Motor::Set_Temperatura(float temp) {
     this->Valor_Temp_Atual = temp;

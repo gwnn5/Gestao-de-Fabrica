@@ -1,17 +1,23 @@
 #ifndef XML_H
 #define XML_H
+
+/**
+ * @file XML.h
+ * @brief Leitor de XML simples: transforma o ficheiro numa arvore de XMLNode
+ *        e converte os textos lidos em numeros.
+ */
 #include <string>
 #include <vector>
 
 class XMLNode;
 
-std::string XmlNormaliza(const std::string& s); // Normaliza um nome 
+std::string XmlNormaliza(const std::string& s); // Normaliza um nome para comparar tags: minusculas, sem espacos, "_" nem "-"
 
 std::string XmlTrim(const std::string& s); // Remove espacos, tabs e quebras de linha do inicio e do fim. 
 
-bool XmlParaInt(const std::string& s, int& valor); //aceitam um '%' no fim
-bool XmlParaFloat(const std::string& s, float& valor); //aceita virgula decimal
-bool XmlParaPar(const std::string& s, int& a, int& b); //separa na virgula
+bool XmlParaInt(const std::string& s, int& valor); // Aceita um '%' no fim ("85%" -> 85)
+bool XmlParaFloat(const std::string& s, float& valor); // Aceita virgula decimal ("0,5" -> 0.5)
+bool XmlParaPar(const std::string& s, int& a, int& b); // Separa na virgula ("0, 80" -> 0 e 80)
 
 /* No de uma arvore XML. Os atributos sao ignorados.
    A procura de filhos usa XmlNormaliza, logo "PROB_AVARIA" == "prob-avaria". */
@@ -31,10 +37,10 @@ class XMLNode
 
         std::string Texto_De(const std::string& nome) const; // Texto do primeiro filho com esse nome ("" se nao existir). 
 
-        static XMLNode* Carregar(const std::string& ficheiro, std::string& erro); // Le e interpreta um ficheiro / um texto. 
-        static XMLNode* Interpretar(const std::string& conteudo, std::string& erro);  //Devolve o na raiz (a apagar por quem o chama) ou NULL, no caso de 'erro' diz o que correu mal. 
+        static XMLNode* Carregar(const std::string& ficheiro, std::string& erro); // Le o ficheiro e devolve a raiz da arvore (a apagar por quem chama), ou NULL com a explicacao em 'erro'
+        static XMLNode* Interpretar(const std::string& conteudo, std::string& erro);  // O mesmo, mas a partir de um texto ja em memoria
 
-        void Set_Texto(const std::string& t) { texto = t; } // usados pelo parser ( classe Interprete)
+        void Set_Texto(const std::string& t) { texto = t; } // Usados pelo parser enquanto constroi a arvore
         void Adicionar(XMLNode* filho) { filhos.push_back(filho); }
 
     private:

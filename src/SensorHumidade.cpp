@@ -11,12 +11,12 @@ string SensorHumidade::Get_Tipo() const {
 }
 
 string SensorHumidade::GetValorAtualString() const {
-    // 1. Tratamento para avaria
+    // -1 é o código de avaria
     if (this->valor_atual == -1) {
         return "AVARIA";
     }
 
-    // 2. Uso do static_cast (Padrão C++) e adição da percentagem exigida pelo simulador
+    // O simulador espera a humidade em percentagem, ex.: "85%"
     return to_string(static_cast<int>(this->valor_atual)) + "%"; 
 }
 

@@ -16,17 +16,18 @@ void SensorFumo::Mostrar(ostream &f) const {
     Sensor::Mostrar(f); 
 }
 
+// Em vez de variar o valor, o sensor de fumo só deteta ou não deteta
 void SensorFumo::Run() {
     int chance_avaria = rand() % 100;
-    if (chance_avaria < Get_Prob()) { // Usa Get_Prob() se for privado
-        this->valor_atual = -1; // Avariado
+    if (chance_avaria < Get_Prob()) {   // Avaria com probabilidade Prob_avaria %
+        this->valor_atual = -1;
         return;
     }
     
-    int chance_fumo = rand() % 500;
+    int chance_fumo = rand() % 500;     // Em média, fumo 1 vez em 500 leituras
     if (chance_fumo == 0) {
-        this->valor_atual = 1; // Fumo detetado!
+        this->valor_atual = 1;
     } else {
-        this->valor_atual = 0; // Zona segura
+        this->valor_atual = 0;
     }
 }

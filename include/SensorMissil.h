@@ -2,6 +2,7 @@
 #define SENSORMISSIL_H
 #include "Sensor.h"
 
+/** @brief Sensor de mísseis. O valor é 1 (míssil detetado) ou 0 (zona segura). */
 class SensorMissil : public Sensor {
 public:
     SensorMissil(int id, string marca, Posicao pos, float prob, float valor_aviso, float valor_atual);

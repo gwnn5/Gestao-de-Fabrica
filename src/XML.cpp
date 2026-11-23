@@ -30,6 +30,7 @@ static string Trim(const string& s)
     return s.substr(ini, s.find_last_not_of(" \t\r\n") - ini + 1);
 }
 
+// Versao publica do Trim
 string XmlTrim(const string& s)
 {
     return Trim(s);
@@ -112,6 +113,7 @@ const XMLNode* XMLNode::Procurar(const string& n) const
     return NULL;
 }
 
+// Ex.: Procurar_Todos("MCOMBUSTAO") dentro de MOTORES devolve os 3 motores de combustao
 vector<const XMLNode*> XMLNode::Procurar_Todos(const string& n) const
 {
     vector<const XMLNode*> r;
@@ -122,6 +124,7 @@ vector<const XMLNode*> XMLNode::Procurar_Todos(const string& n) const
     return r;
 }
 
+// Atalho para Procurar(n)->Get_Texto(), sem rebentar se a tag nao existir
 string XMLNode::Texto_De(const string& n) const
 {
     const XMLNode* f = Procurar(n);
@@ -210,6 +213,7 @@ static XMLNode* Ler_Elemento(const string& t, size_t& i)
     }
 }
 
+// Le o ficheiro todo para uma string e passa-o ao Interpretar
 XMLNode* XMLNode::Carregar(const string& ficheiro, string& erro)
 {
     ifstream in(ficheiro.c_str(), ios::binary);
@@ -223,6 +227,8 @@ XMLNode* XMLNode::Carregar(const string& ficheiro, string& erro)
     return Interpretar(os.str(), erro);
 }
 
+// Le o elemento raiz e confirma que nao sobra nada depois dele;
+// em caso de erro indica a linha onde a leitura parou
 XMLNode* XMLNode::Interpretar(const string& t, string& erro)
 {
     size_t i = (t.compare(0, 3, "\xEF\xBB\xBF") == 0) ? 3 : 0;   // BOM UTF-8

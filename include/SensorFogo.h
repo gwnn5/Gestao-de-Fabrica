@@ -2,6 +2,7 @@
 #define SENSORFOGO_H
 #include "Sensor.h"
 
+/** @brief Sensor de fogo. */
 class SensorFogo : public Sensor {
 public:
     SensorFogo(int id, string marca, Posicao pos, float prob, float valor_aviso, float valor_atual);

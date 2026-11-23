@@ -16,17 +16,18 @@ void SensorMissil::Mostrar(ostream &f) const {
     Sensor::Mostrar(f); 
 }
 
+// Em vez de variar o valor, o sensor de mísseis só deteta ou não deteta
 void SensorMissil::Run() {
     int chance_avaria = rand() % 100;
-    if (chance_avaria < Get_Prob()) { 
-        this->valor_atual = -1; // Avariado
+    if (chance_avaria < Get_Prob()) {   // Avaria com probabilidade Prob_avaria %
+        this->valor_atual = -1;
         return;
     }
     
-    int chance_missel = rand() % 1000;
+    int chance_missel = rand() % 1000;  // Em média, míssil 1 vez em 1000 leituras
     if (chance_missel == 0) {
-        this->valor_atual = 1; // Míssil detetado!
+        this->valor_atual = 1;
     } else {
-        this->valor_atual = 0; // Zona segura
+        this->valor_atual = 0;
     }
 }

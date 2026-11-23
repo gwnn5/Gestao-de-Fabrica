@@ -12,6 +12,7 @@ MotorInducao::~MotorInducao()
 void MotorInducao::Start() { Estado = START; }
 void MotorInducao::Run()   { Estado = RUN; }
 void MotorInducao::Stop()  { Estado = STOP; }
+// Reiniciar = parar e voltar a arrancar
 void MotorInducao::Restart()
 {
     Stop();

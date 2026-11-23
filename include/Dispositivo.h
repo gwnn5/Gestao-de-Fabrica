@@ -4,18 +4,26 @@
 #include "uteis.h"
 class Fabrica;
 
+/**
+ * @brief Classe base de tudo o que está instalado na fábrica (motores e sensores).
+ *
+ * Guarda os dados comuns a todos os dispositivos, para não os repetir
+ * em Motor e em Sensor.
+ */
 class Dispositivo
 {
     public:
         Dispositivo();
-        // Construtor com parâmetros para ser chamado pelas subclasses
+        /** @brief Construtor chamado pelas subclasses na lista de inicialização. */
         Dispositivo(int id, string marca, Posicao p, float prob);
+        /** @brief Virtual para que delete através de um ponteiro da base chame o destrutor certo. */
         virtual ~Dispositivo();
         
+        /** @brief Liga o dispositivo à fábrica que o gere (chamado por Fabrica::Add). */
         void Atribuir_Fabrica(Fabrica *_F) { Fab = _F; }
+        /** @brief Escreve ID, marca e posição; as subclasses acrescentam os seus dados. */
         virtual void Mostrar(ostream &f) const;
 
-        // Getters do Contrato (Tarefa A3)
         int Get_Id() const { return Id; }
         string Get_Marca() const { return Marca; }
         Posicao Get_Pos() const { return pos; }
@@ -26,13 +34,12 @@ class Dispositivo
     protected:
         int Id;
         string Marca;
-        float Prob_avaria; // Alterado para float para não perder precisão
-        Fabrica *Fab;
+        float Prob_avaria;       // Probabilidade de avaria em cada ciclo, em %
+        Fabrica *Fab;            // Fábrica a que pertence (nullptr até ao Add)
         Posicao pos;
         
-        // Atributos adicionados para as estatísticas (Rankings e Relatórios)
-        int Avarias;
-        int Horas_Trabalhadas;
+        int Avarias;             // Número de avarias, usado nos rankings
+        int Horas_Trabalhadas;   // Horas em funcionamento, usado nos rankings
 
     private:
 };

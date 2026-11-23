@@ -12,6 +12,7 @@ MotorEletrico::~MotorEletrico()
 void MotorEletrico::Start() { Estado = START; }
 void MotorEletrico::Run()   { Estado = RUN; }
 void MotorEletrico::Stop()  { Estado = STOP; }
+// Reiniciar = parar e voltar a arrancar
 void MotorEletrico::Restart()
 {
     Stop();
